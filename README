@@ -1,0 +1,35 @@
+cription
+-----------
+
+This program has been designed in order to run commands like Bash. In the 
+project's current state, it is able to exectue basic commands. You can end the
+program by typing "exit" when you see the prompt ("$ "). Note: The program
+will run until the user runs the custom built "exit" command.
+
+
+Known Bugs
+----------
+
+1.) if the user presses enter without typing a command the program crashes
+
+2.) the current program is not capable of running commands with operators 
+
+3.) the program is not capable of using flags with commands (e.g. ls -a)
+
+4.) commands that require addtional parameters will not run (e.g. mkdir)
+
+
+Authors and Collaborators
+-------------------------
+
+Daniel Goerlich
+
+Mike Izbicki
+
+Taeyoung Kim
+
+
+License
+-------
+For all the information on the type of license being used for this program 
+please look at the file called LICENSE.
