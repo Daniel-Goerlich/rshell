@@ -192,7 +192,10 @@ int command_redirection(char userinput[], char **argv)
 	{
 		int fd[2];
 		
-		pipe(fd);
+		if( pipe(fd) == -1)
+		{
+			perror("pipe");
+		}
 		
 		int pid;
 		
@@ -312,7 +315,10 @@ int command_parse(char userinput[], char **argv)
 
 	else
 	{	
-		pipe(fd);
+		if( pipe(fd) == -1)
+		{
+			perror("pipe");
+		}
 		
 		switch( pid = fork() )
 		{
@@ -340,7 +346,10 @@ int command_parse(char userinput[], char **argv)
 		
 		for( int j = 1; j < new_command_point ; ++j )
 		{
-			pipe(newfd);
+			if( pipe(newfd) == -1)
+			{
+				perror("pipe");
+			}
 			
 			switch( pid = fork() )
 			{
