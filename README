@@ -10,13 +10,9 @@ will run until the user runs the custom built "exit" command.
 Known Bugs
 ----------
 
-1.) if the user presses enter without typing a command the program crashes
+1.) only 1024 characters can be entered in as a command
 
-2.) the current program is not capable of running commands with operators 
-
-3.) the program is not capable of using flags with commands (e.g. ls -a)
-
-4.) commands that require addtional parameters will not run (e.g. mkdir)
+2.) cd does not currently work 
 
 
 Authors and Collaborators
@@ -24,9 +20,7 @@ Authors and Collaborators
 
 Daniel Goerlich
 
-Mike Izbicki
-
-Taeyoung Kim
+Anthony David Macpherson
 
 
 License
