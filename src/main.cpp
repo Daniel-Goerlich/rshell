@@ -12,6 +12,7 @@
 #include <errno.h>
 #include <string.h>
 #include <fcntl.h>
+#include <signal.h>
 
 using namespace std;
 
@@ -19,6 +20,7 @@ using namespace std;
 //Global Variable(s)
 //==================================================================
 const int MAX_ARR_SIZE = 1024;
+int child_pid = -1;
 //==================================================================
 
 
@@ -27,6 +29,31 @@ const int MAX_ARR_SIZE = 1024;
 int is_digit(char *curr)
 {
 	return ( *curr >= '0' && *curr <= '9' );
+}
+//==================================================================
+void prompt()
+{
+	char hostname[50];
+	
+	if( gethostname(hostname, 50) == -1  )
+	{
+		perror("gethostname");
+	}
+	
+	char *user_login = getlogin();
+
+	if( user_login == NULL )
+	{
+		perror("getlogin");
+	}
+
+	if( user_login )
+	{
+		cout << user_login << "@" << hostname;
+	}
+
+	cout << "$ ";
+
 }
 //==================================================================
 int mod_command(char command[], char **argv)
@@ -51,12 +78,12 @@ int command_redirection(char userinput[], char **argv)
 	int in_val = 0;
 	int out_val = 1;
     
-    char *filein;
-    char *curr_in;
-    char *curr_out;
+   	 char *filein;
+   	 char *curr_in;
+   	 char *curr_out;
     
-    char temp_in[MAX_ARR_SIZE];
-    char temp_out[MAX_ARR_SIZE];
+	char temp_in[MAX_ARR_SIZE];
+	char temp_out[MAX_ARR_SIZE];
 	char file_out[MAX_ARR_SIZE];
 	char dmsg[MAX_ARR_SIZE];
 	char c_endline[2];
@@ -85,9 +112,9 @@ int command_redirection(char userinput[], char **argv)
     	
     	else if ( ( curr_in = strstr(buffer,"<") ) != NULL ) 
     	{
-		    filein = NULL; 
-    	    strcpy(temp_in, curr_in+1);
-         	filein = strtok(temp_in, " \n\t><");
+	   	filein = NULL; 
+    		strcpy(temp_in, curr_in+1); 
+  		filein = strtok(temp_in, " \n\t><");
          	
          	if ( filein == NULL ) 
          	{
@@ -103,7 +130,7 @@ int command_redirection(char userinput[], char **argv)
     	  		*(curr_in - 1) = ' ';
      		}
 		    
-		    buffer = curr_in + 1;
+		buffer = curr_in + 1;
 	        int new_stdin;
     		new_stdin = -1; 
 
@@ -114,9 +141,9 @@ int command_redirection(char userinput[], char **argv)
     		
     		if ( new_stdin != -1 ) 
     		{
-            		close ( in_val );
-            		dup( new_stdin );
-          			close ( new_stdin );
+            		if( close( in_val ) == -1 ){perror("close"); exit(1);}
+            		if( dup( new_stdin ) == -1 ){perror("dup"); exit(1);}
+          		if( close ( new_stdin) == -1 ){perror("close"); exit(1);}
     		}
     	}
     
@@ -132,8 +159,8 @@ int command_redirection(char userinput[], char **argv)
        		
        		else
        		{
-                strcpy(temp_out, curr_out + 1);
-                buffer = curr_out + 1;
+                	strcpy(temp_out, curr_out + 1);
+                	buffer = curr_out + 1;
     	   	}
     	   	
     		*curr_out = 0;
@@ -169,9 +196,9 @@ int command_redirection(char userinput[], char **argv)
     		
     		if( new_stdout != -1 )
     		{
-    			close(out_val);
-    			dup(new_stdout);
-    			close(new_stdout);
+    			if( close( out_val ) == -1 ){perror("close"); exit(1);}
+            		if( dup( new_stdout ) == -1 ){perror("dup"); exit(1);}
+          		if( close ( new_stdout ) == -1 ){perror("close"); exit(1);}
     		}
     
     	}
@@ -223,7 +250,7 @@ int command_redirection(char userinput[], char **argv)
 			exit (1);
 		}
 		
-		close(fd[1]);
+		if( close(fd[1]) == -1 ){perror("close"); exit(1);}
 	}
 	
         int arg_number = mod_command(userinput, argv);
@@ -237,7 +264,7 @@ int command_parse(char userinput[], char **argv)
 	char *start;
 	
 	int new_command_point = 0;
-    int command_point = 0;
+    	int command_point = 0;
 	
 	int b_flag = 0;
 
@@ -251,7 +278,7 @@ int command_parse(char userinput[], char **argv)
 	    *curr = ' ';
 	}
 
-    start = userinput;
+    	start = userinput;
     
 	int nlen = strlen(userinput);
 	
@@ -266,19 +293,19 @@ int command_parse(char userinput[], char **argv)
             }
         }
         
-    command[command_point] = start;
+    	command[command_point] = start;
 	new_command_point = command_point;
 
 	int pid;
 	int status = 0;
 	
 	int newfd[2];
-    int  fd[2];
+    	int  fd[2];
 
 	if(new_command_point == 0)
 	{
 
-        pid = fork ();
+        pid = fork();
         
         if ( pid == -1 ) 
         {
@@ -299,6 +326,8 @@ int command_parse(char userinput[], char **argv)
         
         else if ( pid > 0 ) 
         {
+		child_pid = pid;
+
             if( b_flag == 0 )
             {
               	wait(&status);
@@ -325,13 +354,13 @@ int command_parse(char userinput[], char **argv)
             case 0: 
             command_redirection( command[0], argv );
             
-            if( dup2(fd[1], 1) == -1)
-			{
-				perror("dup2");
-				exit (1);
-			}
+        if( dup2(fd[1], 1) == -1)
+	{	
+		perror("dup2");
+		exit (1);
+	}
 		
-            close( fd[0] );
+            if( close( fd[0] ) == -1 ) {perror("close"); exit(1);}
             
             if ( execvp ( argv[0], argv ) == -1 )
             {
@@ -362,7 +391,7 @@ int command_parse(char userinput[], char **argv)
 					exit (1);
 				}
 		
-                close( fd[1] );
+                if( close( fd[1] ) == -1 ) {perror("close"); exit(1);}
                 
                 if( dup2(fd[1], 1) == -1)
 				{
@@ -370,7 +399,7 @@ int command_parse(char userinput[], char **argv)
 					exit (1);
 				}
 		
-                close( newfd[0] ); 
+                if( close( newfd[0] ) == -1 ) {perror("close"); exit(1);} 
                 
                 if ( execvp ( argv[0], argv ) == -1 )
                 {
@@ -383,8 +412,8 @@ int command_parse(char userinput[], char **argv)
                 exit(1);
 			}
 			
-			close( fd[0] );
-			close( fd[1] );
+			if( close( fd[0] ) == -1 ) {perror("close"); exit(1);}
+			if( close( fd[1] ) == -1 ) {perror("close"); exit(1);}
 			
 			fd[0] = newfd[0];
 			fd[1] = newfd[1];
@@ -395,8 +424,13 @@ int command_parse(char userinput[], char **argv)
             case 0:
             command_redirection( command[new_command_point], argv );
             
-            dup2( fd[0], 0 );
-            close( fd[1] );
+            	if( dup2(fd[0], 0) == -1)
+		{
+			perror("dup2");
+			exit (1);
+		}
+
+            if( close( fd[1] ) == -1 ) {perror("close"); exit(1);}
             
             if ( execvp ( argv[0], argv ) == -1 )
             {
@@ -409,8 +443,8 @@ int command_parse(char userinput[], char **argv)
             exit(1);
 		}
 		
-		close( fd[0] );
-		close( fd[1] );
+		if( close( fd[0] ) == -1 ) {exit(1);}
+		if( close( fd[1] ) == -1 ) {exit(1);}
 		
 		if( b_flag == 0 )
 		{
@@ -429,14 +463,58 @@ int command_parse(char userinput[], char **argv)
 	return status;
 }
 //==================================================================
+void sig_handler( int sig )
+{
+	
+	if(sig == SIGINT) // Ctrl-C
+	{
+		if( child_pid != -1  )
+		{
+			kill(child_pid, SIGKILL);
+			child_pid = -1;
+			cout << endl;
+			return;
+		}
+
+		else
+		{
+			cout << endl;
+			prompt();
+			cout << flush;
+			return;
+		}
+	}
+
+	//if(sig == SIGTSTP) // Ctrl-Z
+	//{
+	//	
+	//}
+	
+}
+//==================================================================
+void cd(char command[])
+{
+	string new_path;
+	new_path = strtok(command, "cd ");
+	
+	if( chdir( new_path.c_str() ) == -1 )
+	{
+		perror("chdir");
+	}
+}
+//==================================================================
+
 
 
 int main()
 {
 	
+	if( signal(SIGINT, sig_handler) == SIG_ERR ){perror("signal");}
+
 	while(true) // Main Loop that Runs the Program
 	{
-		cout << "$ "; // Output of Prompt
+		if( signal(SIGINT, sig_handler) == SIG_ERR ){perror("signal");}
+		prompt(); // Output of Prompt
 		
 		char command[MAX_ARR_SIZE]; // Note: Only stores 2^10 chars
 		char buff[MAX_ARR_SIZE]; // Buffer for Command
@@ -471,7 +549,16 @@ int main()
 		    return 0;
 		}
 	//==================================================================	
-		
+	
+
+	//========================Changes Directories=======================
+		if( command[0] == 'c' && command[1] == 'd' )
+		{
+			cd(command);
+			continue;
+		}												
+	//==================================================================	
+
 		
 	//=============Handles Various Operators in Commands================
 	
@@ -596,3 +683,4 @@ int main()
 	}
 
 }
+
