@@ -12,7 +12,9 @@ Known Bugs
 
 1.) only 1024 characters can be entered in as a command
 
-2.) cd does not currently work 
+2.) cd only works when used alone
+
+3.) cd does not recognize comments and will try to convert comments into a path 
 
 
 Authors and Collaborators
