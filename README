@@ -16,6 +16,7 @@ Known Bugs
 
 3.) cd does not recognize comments and will try to convert comments into a path 
 
+4.) the exit command must be exaclty as "exit" any additional characters will cause an error
 
 Authors and Collaborators
 -------------------------
