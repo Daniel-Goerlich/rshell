@@ -1,0 +1,49 @@
+Script started on Fri Dec  5 15:10:53 2014
+bash: warning: setlocale: LC_ALL: cannot change locale (C.UTF-8)
+~
+dgoer001@hammer $ cd  cs100
+/bin/bash: warning: setlocale: LC_ALL: cannot change locale (C.UTF-8)
+[0;91m
+===============================================================================
+|                                                                             |
+| You have enabled settings specific for cs100.                               |
+|                                                                             |
+===============================================================================
+[0m
+bash: warning: setlocale: LC_ALL: cannot change locale (C.UTF-8)
+bash: warning: setlocale: LC_ALL: cannot change locale (C.UTF-8)
+[s%%%%%%%%%%[u[0;32mdgoer001[0;36m@[0;32mcs100[0;36m:[0;32m~[0;95m [0;36m$[0m cd rShell
+[s%%%%%%%%%%[u[0;32mdgoer001[0;36m@[0;32mcs100[0;36m:[0;32m~/rShell[0;95m [0;36m$[0m cd rshell
+[s%%%%%%%%%%[u[0;32mdgoer001[0;36m@[0;32mcs100[0;36m:[0;32m~/rShell/rshell[0;95m (master) [0;36m$[0m bin/rshell
+dgoer001@hammer.cs.ucr.edu$ pwd
+/class/classes/dgoer001/rShell/rshell
+dgoer001@hammer.cs.ucr.edu$ cd ..
+dgoer001@hammer.cs.ucr.edu$ pwd
+/class/classes/dgoer001/rShell
+dgoer001@hammer.cs.ucr.edu$ cd rshell
+dgoer001@hammer.cs.ucr.edu$ cd  pwd
+/class/classes/dgoer001/rShell/rshell
+dgoer001@hammer.cs.ucr.edu$ cd ../..
+dgoer001@hammer.cs.ucr.edu$ pwd
+/class/classes/dgoer001
+dgoer001@hammer.cs.ucr.edu$ cd rShell/rshell
+dgoer001@hammer.cs.ucr.edu$ pwd
+/class/classes/dgoer001/rShell/rshell
+dgoer001@hammer.cs.ucr.edu$ cd ../fake_path
+chdir: No such file or directory
+dgoer001@hammer.cs.ucr.edu$ cd facke   ke path
+chdir: No such file or directory
+dgoer001@hammer.cs.ucr.edu$ cd    bin/rshell
+dgoer001@hammer.cs.ucr.edu$ ^C
+dgoer001@hammer.cs.ucr.edu$ ^C
+dgoer001@hammer.cs.ucr.edu$ pwd^C
+dgoer001@hammer.cs.ucr.edu$ ls ^C
+dgoer001@hammer.cs.ucr.edu$ cd .. &         cd .. ^C
+dgoer001@hammer.cs.ucr.edu$ exi it
+[s%%%%%%%%%%[u[0;32mdgoer001[0;36m@[0;32mcs100[0;36m:[0;32m~/rShell/rshell[0;95m (master) [0;36m$[0m exit
+exit
+~
+dgoer001@hammer $ exit
+exit
+
+Script done on Fri Dec  5 15:15:59 2014
