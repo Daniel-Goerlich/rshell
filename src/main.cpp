@@ -181,6 +181,7 @@ int command_redirection(char userinput[], char **argv)
 			}
 
 			int new_stdout;
+			new_stdout = -1;
 
 			if( mod_flag == 0 )
 			{
