@@ -62,7 +62,7 @@ void cpRDWR(string in, string out, int buffSize){
 		readVal = read(infd, buff, buffSize);
 	}
 
-
+	delete[] buff;
 }
 
 
