@@ -41,7 +41,7 @@ void print( vector<string>& list ) // Prints basic ls
 {
 	int row_count = 0;
 
-	for( int i = 0; i < list.size(); ++i ) 
+	for( unsigned int i = 0; i < list.size(); ++i ) 
 	{
 
 		if( row_count == 4 ) // Determines the number of rows in output
@@ -300,8 +300,6 @@ void file_search_a() // ls -a
 
 	struct dirent *entry;
 
-	char *curr;
-
 	if( ( directory = opendir(".") ) == NULL ) 
 	{
 		perror( "opendir" );
@@ -312,8 +310,6 @@ void file_search_a() // ls -a
 
 	if( ( entry = readdir(directory) ) != NULL ) 
 	{	
-		curr = entry->d_name;						
-
 		file_list.push_back( entry->d_name );
 	}
 
@@ -323,8 +319,6 @@ void file_search_a() // ls -a
 
 		if( ( entry = readdir(directory) ) != NULL ) 
 		{	
-			curr = entry->d_name;						
-
 			file_list.push_back( entry->d_name );
 		}	
 
@@ -358,8 +352,6 @@ void file_search_a(char *curr_directory) // ls -a w/ directory passed in
 
 	struct dirent *entry;
 
-	char *curr;
-
 	if( ( directory = opendir(curr_directory) ) == NULL ) 
 	{
 		perror( "opendir" );
@@ -370,8 +362,6 @@ void file_search_a(char *curr_directory) // ls -a w/ directory passed in
 
 	if( ( entry = readdir(directory) ) != NULL ) 
 	{	
-		curr = entry->d_name;						
-
 		file_list.push_back( entry->d_name );
 	}
 
@@ -381,8 +371,6 @@ void file_search_a(char *curr_directory) // ls -a w/ directory passed in
 
 		if( ( entry = readdir(directory) ) != NULL ) 
 		{	
-			curr = entry->d_name;						
-
 			file_list.push_back( entry->d_name );
 		}	
 
@@ -629,8 +617,6 @@ void file_search_l_a() // ls -l -a
 
 	struct dirent *entry;
 
-	char *curr;
-
 	if( ( directory = opendir(".") ) == NULL ) 
 	{
 		perror( "opendir" );
@@ -641,8 +627,6 @@ void file_search_l_a() // ls -l -a
 
 	if( ( entry = readdir(directory) ) != NULL ) 
 	{	
-		curr = entry->d_name;						
-
 		file_list.push_back( entry->d_name );
 	}
 
@@ -652,8 +636,6 @@ void file_search_l_a() // ls -l -a
 
 		if( ( entry = readdir(directory) ) != NULL ) 
 		{	
-			curr = entry->d_name;						
-
 			file_list.push_back( entry->d_name );
 		}	
 
@@ -685,8 +667,6 @@ void file_search_l_a(char *curr_directory) // ls -l -a w/ directory passed in
 
 	struct dirent *entry;
 
-	char *curr;
-
 	if( ( directory = opendir(curr_directory) ) == NULL ) 
 	{
 		perror( "opendir" );
@@ -697,8 +677,6 @@ void file_search_l_a(char *curr_directory) // ls -l -a w/ directory passed in
 
 	if( ( entry = readdir(directory) ) != NULL ) 
 	{	
-		curr = entry->d_name;						
-
 		file_list.push_back( entry->d_name );
 	}
 
@@ -708,8 +686,6 @@ void file_search_l_a(char *curr_directory) // ls -l -a w/ directory passed in
 
 		if( ( entry = readdir(directory) ) != NULL ) 
 		{	
-			curr = entry->d_name;						
-
 			file_list.push_back( entry->d_name );
 		}	
 
