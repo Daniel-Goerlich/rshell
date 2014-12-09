@@ -680,6 +680,12 @@ void file_search_l_a(char *curr_directory) // ls -l -a w/ directory passed in
 		file_list.push_back( entry->d_name );
 	}
 
+	if(errno != 0)
+	{
+		perror( "Failed in reading directory" );
+		return;
+	}
+
 	while(entry != NULL) 
 	{
 		errno = 0;
